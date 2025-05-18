@@ -23,7 +23,8 @@ public class TiendaService {
     }
 
     public Tienda findById(Long id) {
-        return tiendaRepository.getById(id);
+        return tiendaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tienda no encontrada con ID: " + id));
     }
 
     public Tienda save(Tienda tienda) {
@@ -34,7 +35,7 @@ public class TiendaService {
         tiendaRepository.deleteById(id);
     }
 
-    public Tienda updateTienda(Long id, Tienda tienda){
+    public Tienda updateTienda(Long id, Tienda tienda) {
         Tienda tiendaToUpdate = tiendaRepository.findById(id).orElse(null);
         if (tiendaToUpdate != null) {
             tiendaToUpdate.setNombreTienda(tienda.getNombreTienda());
