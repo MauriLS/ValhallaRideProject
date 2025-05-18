@@ -20,7 +20,7 @@ public class UsuarioService {
     }
 
     public Usuario findById(Long id){
-        return usuarioRepository.getById(id);
+        return usuarioRepository.findById(id).orElse(null);
     }
 
     public Usuario save(Usuario usuario){
@@ -31,12 +31,15 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    public Usuario updateUsuario(Long id, Usuario usuario){
+    public Usuario updateUsuario(Long id, Usuario usuario) {
         Usuario usuarioToUpdate = usuarioRepository.findById(id).orElse(null);
+        
         if (usuarioToUpdate != null) {
-            usuarioToUpdate.setNombreUsuario(usuario.getNombreUsuario());
+            usuarioToUpdate.setNombreUsuario((usuario.getNombreUsuario()));
             usuarioToUpdate.setCorreoUsuario(usuario.getCorreoUsuario());
             usuarioToUpdate.setContrasena(usuario.getContrasena());
+            usuarioToUpdate.setRol(usuario.getRol());
+
             return usuarioRepository.save(usuarioToUpdate);
         } else {
             return null;
