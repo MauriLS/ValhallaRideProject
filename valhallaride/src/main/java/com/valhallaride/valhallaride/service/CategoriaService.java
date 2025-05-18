@@ -22,8 +22,8 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
-    public Categoria findById(Long id) {
-        return categoriaRepository.getById(id);
+    public Producto findById(Long id) {
+        return productoRepository.findById(id).orElse(null);
     }
 
     public Categoria save(Categoria categoria) {
