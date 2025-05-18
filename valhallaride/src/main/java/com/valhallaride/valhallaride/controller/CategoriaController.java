@@ -31,6 +31,18 @@ public class CategoriaController {
         if (categorias.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
+        for (Categoria c : categorias) {
+            if (c.getProductos() != null) {
+                c.getProductos().forEach(p -> {
+                    p.setCategoria(null);
+                    if (p.getTienda() != null) {
+                        p.getTienda().setProductos(null);
+                    }
+                });
+            }
+        }
+
         return ResponseEntity.ok(categorias);
     }
 
@@ -38,9 +50,24 @@ public class CategoriaController {
     public ResponseEntity<Categoria> buscar(@PathVariable Long id) {
         try {
             Categoria categoria = categoriaService.findById(id);
+            if (categoria == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+
+            if (categoria.getProductos() != null) {
+                categoria.getProductos().forEach(p -> {
+                    p.setCategoria(null);
+                    if (p.getTienda() != null) {
+                        p.getTienda().setProductos(null);
+                    }
+                });
+            }
+
             return ResponseEntity.ok(categoria);
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
