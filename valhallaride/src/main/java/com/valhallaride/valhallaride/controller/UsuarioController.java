@@ -32,6 +32,16 @@ public class UsuarioController {
         if(usuarios.isEmpty()){
             return ResponseEntity.noContent().build();
         }
+
+        for (Usuario u : usuarios) {
+            if (u.getOrdenes() != null){
+                u.getOrdenes().forEach(o -> o.setUsuario(null));
+            }
+
+            if (u.getRol() != null && u.getRol().getUsuario() != null) {
+                u.getRol().setUsuario(null);
+            }
+        }
         return ResponseEntity.ok(usuarios);
     }
 
@@ -39,6 +49,18 @@ public class UsuarioController {
     public ResponseEntity<Usuario> buscar(@PathVariable Long id){
         try{
             Usuario usuario = usuarioService.findById(id);
+            if (usuario == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (usuario.getOrdenes() != null) {
+                usuario.getOrdenes().forEach(o -> o.setUsuario(null));
+            }
+
+            if (usuario.getRol() != null && usuario.getRol().getUsuario() != null) {
+                usuario.getRol().setUsuario(null);
+            }
+
             return ResponseEntity.ok(usuario);
         }catch (Exception e){
             return ResponseEntity.notFound().build();
@@ -53,10 +75,10 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario){
-        try{
-            usuarioService.save(usuario);
-            return ResponseEntity.ok(usuario);
-        }catch( Exception e){
+        Usuario usuarioActualizado = usuarioService.updateUsuario(id, usuario);
+        if (usuarioActualizado != null){
+            return ResponseEntity.ok(usuarioActualizado);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
@@ -65,6 +87,18 @@ public class UsuarioController {
     public ResponseEntity<Usuario> patchUsuario(@PathVariable Long id, @RequestBody Usuario partialUsuario){
         try{
             Usuario updatedUsuario = usuarioService.patchUsuario(id, partialUsuario);
+            if (updatedUsuario == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (updatedUsuario.getOrdenes() != null){
+                updatedUsuario.getOrdenes().forEach(o -> o.setUsuario(null));
+            }
+
+            if (updatedUsuario.getRol() != null && updatedUsuario.getRol().getUsuario() != null){
+                updatedUsuario.getRol().setUsuario(null);
+            }
+            
             return ResponseEntity.ok(updatedUsuario);
         }catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
