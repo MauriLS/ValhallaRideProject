@@ -20,15 +20,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetodoPago {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idMetPago;
 
     @Column(nullable = false)
     private String nomMetPago;
-
-    @OneToOne
-    @JoinColumn(name = "idOrden", nullable = false)
-    private Orden orden;
 }
