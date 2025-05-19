@@ -23,7 +23,7 @@ public class CategoriaService {
     }
 
     public Categoria findById(Long id) {
-        return categoriaRepository.getById(id);
+        return categoriaRepository.findById(id).orElse(null);
     }
 
     public Categoria save(Categoria categoria) {
