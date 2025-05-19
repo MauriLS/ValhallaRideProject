@@ -80,6 +80,14 @@ public class ProductoController {
     public ResponseEntity<Producto> patchProducto(@PathVariable Long id, @RequestBody Producto partialProducto){
         try{
             Producto updatedProducto = productoService.patchProducto(id, partialProducto);
+
+            if (updatedProducto.getCategoria() != null){
+                updatedProducto.getCategoria().setProductos(null);
+            }
+            if (updatedProducto.getTienda() != null){
+                updatedProducto.getTienda().setProductos(null);
+            }
+            
             return ResponseEntity.ok(updatedProducto);
         } catch (RuntimeException e){
             return ResponseEntity.notFound().build();
