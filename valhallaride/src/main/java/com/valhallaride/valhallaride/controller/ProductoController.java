@@ -68,10 +68,22 @@ public class ProductoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto){
-        try{
-            productoService.save(producto);
-            return ResponseEntity.ok(producto);
-        }catch (Exception e){
+        try {
+            Producto productoYaExistente = productoService.findById(id);
+            if(productoYaExistente == null){
+                return ResponseEntity.notFound().build();
+            }
+
+            productoYaExistente.setNombreProducto(producto.getNombreProducto());
+            productoYaExistente.setDescripcionProducto(producto.getDescripcionProducto());
+            productoYaExistente.setPrecioProducto(producto.getPrecioProducto());
+            productoYaExistente.setStockProducto(producto.getStockProducto());
+            productoYaExistente.setCategoria(producto.getCategoria());
+            productoYaExistente.setTienda(producto.getTienda());
+
+            Producto productoActualizado = productoService.save(productoYaExistente);
+            return ResponseEntity.ok(productoActualizado);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
