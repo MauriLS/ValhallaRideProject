@@ -25,7 +25,7 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping
+   @GetMapping
     public ResponseEntity<List<Categoria>> listar() {
         List<Categoria> categorias = categoriaService.findAll();
         if (categorias.isEmpty()) {
@@ -79,10 +79,18 @@ public class CategoriaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> actualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
-        try {
-            categoriaService.save(categoria);
-            return ResponseEntity.ok(categoria);
-        } catch (Exception e) {
+        Categoria catActualizada = categoriaService.updateCategoria(id, categoria);
+        if (catActualizada != null){
+            if (catActualizada.getProductos() != null){
+                catActualizada.getProductos().forEach(p -> {
+                    p.setCategoria(null);
+                    if (p.getTienda() != null) {
+                        p.getTienda().setProductos(null);
+                    }
+                });
+            }
+            return ResponseEntity.ok(catActualizada);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
@@ -91,6 +99,15 @@ public class CategoriaController {
     public ResponseEntity<Categoria> patchCategoria(@PathVariable Long id, @RequestBody Categoria partialCategoria) {
         try {
             Categoria updatedCategoria = categoriaService.patchCategoria(id, partialCategoria);
+
+            if (updatedCategoria.getProductos() != null){
+                updatedCategoria.getProductos().forEach(p -> {
+                    p.setCategoria(null);
+                    if (p.getTienda() != null){
+                        p.getTienda().setProductos(null);
+                    }
+                });
+            }
             return ResponseEntity.ok(updatedCategoria);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
