@@ -1,19 +1,16 @@
 package com.valhallaride.valhallaride.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.valhallaride.valhallaride.model.Producto;
+import com.valhallaride.valhallaride.model.ProductoOrden;
+
 import java.util.List;
 
+public interface ProductoOrdenRepository extends JpaRepository<ProductoOrden, Integer> {
 
-public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    List<Producto> findByNombreProducto(String nombreProducto); // Encuentra productos por su nombre
-    List<Producto> findByDescripcionProducto(String descripcionProducto); // Encuentra productos por su descripcion
-    List<Producto> findByPrecioProducto(Integer precioProducto); // Encuentra productos por su precio
-    List<Producto> findByStockProducto(Integer stockProducto); // Encuentra productos por su stock
-    List<Producto> findByCategoria_idCategoria(Integer idCategoria); // Encuentra productos que pertenezcan a una categoria especficia(clave primaria de "Categoria")
-    List<Producto> findByTienda_idTienda(Integer id_tienda); // Encuentra productos que pertenezcan a una tienda especifica(clave primaria de "Tienda")
+    List<ProductoOrden> findByProducto_idProducto(Producto producto); // Busca todas las instancias de "ProductoOrden" que esten relacionadas con un Producto específico 
+    List<ProductoOrden> findByOrden_IdOrden(Integer idOrden); // Busca todas las instancias de "ProductoOrden" que estén relacionadas con una Orden específica okkey
+    List<ProductoOrden> findByCantidad(Integer cantidad); // Busca todas las instancias de "ProductoOrden" que tengan una cantidad específica  ok
 }
