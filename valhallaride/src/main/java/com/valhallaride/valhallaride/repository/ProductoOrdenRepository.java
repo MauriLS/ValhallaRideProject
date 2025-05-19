@@ -15,4 +15,3 @@ public interface ProductoOrdenRepository extends JpaRepository<ProductoOrden, Lo
     List<ProductoOrden> findByCantidad(Integer cantidad); // Busca todas las instancias de "ProductoOrden" que tengan una cantidad específica
 }
 
-
