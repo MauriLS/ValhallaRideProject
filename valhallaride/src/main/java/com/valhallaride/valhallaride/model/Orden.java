@@ -36,8 +36,8 @@ public class Orden {
     private Integer total;
 
     @OneToOne
-    @JoinColumn(name = "idMetPago", nullable = false)
-    private MetodoPago metodopago;
+    @JoinColumn(name = "id_met_pago", nullable = false)
+    private MetodoPago metodoPago;
     
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
