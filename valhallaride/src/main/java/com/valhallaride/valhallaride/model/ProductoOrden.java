@@ -6,33 +6,31 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
-@Table(name = "productoOrden")
+@Table(name = "producto_orden")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductoOrden {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProductoOrden;
 
-
-    @Column(length = 5, nullable = false)
+    @Column(nullable = false)
     private int cantidad;
 
-    @OneToOne
-    @JoinColumn(name = "idOrden", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_orden", nullable = false)
     private Orden orden;
 
-    @OneToOne
-    @JoinColumn(name = "idProducto", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 }
