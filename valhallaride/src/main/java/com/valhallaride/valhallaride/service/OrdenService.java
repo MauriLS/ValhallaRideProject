@@ -1,7 +1,6 @@
 package com.valhallaride.valhallaride.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,47 +21,40 @@ public class OrdenService {
         return ordenRepository.findAll();
     }
 
-    public Orden findById(Long id) {
-        return ordenRepository.getById(id);
+    public Orden findById(Integer id) {
+        return ordenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + id));
     }
 
     public Orden save(Orden orden) {
         return ordenRepository.save(orden);
     }
 
-    public void delete(Long id) {
+    public void delete(Integer id) {
+        if (!ordenRepository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar. Orden no encontrada con ID: " + id);
+        }
         ordenRepository.deleteById(id);
     }
 
-    public Orden updateOrden(Long id, Orden orden){
-        Orden ordenToUpdate = ordenRepository.findById(id).orElse(null);
-        if (ordenToUpdate != null) {
-            ordenToUpdate.setFecha(orden.getFecha());
-            ordenToUpdate.setTotal(orden.getTotal());
-            return ordenRepository.save(ordenToUpdate);
-        } else {
-            return null;
-        }
+    public Orden updateOrden(Integer id, Orden orden) {
+        Orden ordenToUpdate = findById(id); // ya lanza excepciÃ³n si no existe
+        ordenToUpdate.setFecha(orden.getFecha());
+        ordenToUpdate.setTotal(orden.getTotal());
+        return ordenRepository.save(ordenToUpdate);
     }
 
-    public Orden patchOrden(long id, Orden parcialOrden) {
-        Optional<Orden> ordenOptional = ordenRepository.findById(id);
-        if (ordenOptional.isPresent()) {
+    public Orden patchOrden(Integer id, Orden parcialOrden) {
+        Orden ordenToUpdate = findById(id);
 
-            Orden ordenToUpdate = ordenOptional.get();
-
-            if (parcialOrden.getFecha() != null) {
-                ordenToUpdate.setFecha(parcialOrden.getFecha());
-            }
-
-            if (parcialOrden.getTotal() != null) {
-                ordenToUpdate.setTotal(parcialOrden.getTotal());
-            }
-
-            return ordenRepository.save(ordenToUpdate);
-        } else {
-            return null;
+        if (parcialOrden.getFecha() != null) {
+            ordenToUpdate.setFecha(parcialOrden.getFecha());
         }
 
+        if (parcialOrden.getTotal() != null) {
+            ordenToUpdate.setTotal(parcialOrden.getTotal());
+        }
+
+        return ordenRepository.save(ordenToUpdate);
     }
 }
