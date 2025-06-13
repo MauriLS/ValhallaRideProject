@@ -34,9 +34,9 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
-    public Producto updateProducto(Long id, Producto producto){
+    public Producto updateProducto(Long id, Producto producto) {
         Producto productoToUpdate = productoRepository.findById(id).orElse(null);
-        if (productoToUpdate != null){
+        if (productoToUpdate != null) {
             productoToUpdate.setNombreProducto(producto.getNombreProducto());
             productoToUpdate.setDescripcionProducto(producto.getDescripcionProducto());
             productoToUpdate.setPrecioProducto(producto.getPrecioProducto());
@@ -46,7 +46,6 @@ public class ProductoService {
             return null;
         }
     }
-
 
     public Producto patchProducto(Long id, Producto parcialProducto) {
         Optional<Producto> productoOptional = productoRepository.findById(id);
@@ -76,5 +75,29 @@ public class ProductoService {
         }
     }
 
-}
+    // Buscar productos por nombre (contiene, sin distinguir mayúsculas)
+    public List<Producto> buscarPorNombre(String nombre) {
+        return productoRepository.buscarPorNombre(nombre);
+    }
 
+    // Buscar productos por nombre y categoría
+    public List<Producto> buscarPorNombreYCategoria(String nombre, Integer idCategoria) {
+        return productoRepository.buscarPorNombreYCategoria(nombre, idCategoria);
+    }
+
+    // Buscar productos en un rango de precios
+    public List<Producto> buscarPorRangoDePrecio(Integer min, Integer max) {
+        return productoRepository.buscarPorRangoDePrecio(min, max);
+    }
+
+    // Buscar productos por tienda ordenados por precio descendente
+    public List<Producto> buscarPorTiendaOrdenadoPorPrecio(Integer idTienda) {
+        return productoRepository.buscarPorTiendaOrdenadoPorPrecio(idTienda);
+    }
+
+    // Buscar productos con stock bajo
+    public List<Producto> buscarConStockBajo(Integer stock) {
+        return productoRepository.buscarConStockBajo(stock);
+    }
+
+}
