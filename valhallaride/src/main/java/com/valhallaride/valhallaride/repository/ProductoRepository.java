@@ -7,13 +7,21 @@ import org.springframework.data.repository.query.Param;
 import com.valhallaride.valhallaride.model.Producto;
 import java.util.List;
 
-
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    List<Producto> findByNombreProducto(String nombreProducto); // Encuentra productos por su nombre
-    List<Producto> findByDescripcionProducto(String descripcionProducto); // Encuentra productos por su descripcion
-    List<Producto> findByPrecioProducto(Integer precioProducto); // Encuentra productos por su precio
-    List<Producto> findByStockProducto(Integer stockProducto); // Encuentra productos por su stock
-    List<Producto> findByCategoria_idCategoria(Integer idCategoria); // Encuentra productos que pertenezcan a una categoria especficia(clave primaria de "Categoria")
-    List<Producto> findByTienda_idTienda(Integer id_tienda); // Encuentra productos que pertenezcan a una tienda especifica(clave primaria de "Tienda")
+    @Query("SELECT p FROM Producto p WHERE LOWER(p.nombreProducto) LIKE LOWER(CONCAT('%', :nombre, '%'))")
+    List<Producto> buscarPorNombre(@Param("nombre") String nombre);
+
+    @Query("SELECT p FROM Producto p WHERE p.nombreProducto = :nombre AND p.categoria.idCategoria = :idCategoria")
+    List<Producto> buscarPorNombreYCategoria(@Param("nombre") String nombre, @Param("idCategoria") Integer idCategoria);
+
+    @Query("SELECT p FROM Producto p WHERE p.precioProducto BETWEEN :min AND :max")
+    List<Producto> buscarPorRangoDePrecio(@Param("min") Integer min, @Param("max") Integer max);
+
+    @Query("SELECT p FROM Producto p WHERE p.tienda.idTienda = :idTienda ORDER BY p.precioProducto DESC")
+    List<Producto> buscarPorTiendaOrdenadoPorPrecio(@Param("idTienda") Integer idTienda);
+
+    @Query("SELECT p FROM Producto p WHERE p.stockProducto < :stock")
+    List<Producto> buscarConStockBajo(@Param("stock") Integer stock);
+
 }
