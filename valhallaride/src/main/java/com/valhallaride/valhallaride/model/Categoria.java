@@ -30,6 +30,7 @@ public class Categoria {
     private String nombreCategoria;
 
     @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
     private List<Producto> productos;
 }
 
