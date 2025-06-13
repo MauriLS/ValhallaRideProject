@@ -33,6 +33,7 @@ public class Tienda {
     private String direccionTienda;
 
     @OneToMany(mappedBy = "tienda")
+    @JsonIgnore
     private List<Producto> productos;
 
 }
