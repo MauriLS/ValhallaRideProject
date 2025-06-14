@@ -1,5 +1,8 @@
 package com.valhallaride.valhallaride.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +31,7 @@ public class ProductoOrden {
 
     @ManyToOne
     @JoinColumn(name = "id_orden", nullable = false)
+    @JsonIgnore
     private Orden orden;
 
     @ManyToOne
