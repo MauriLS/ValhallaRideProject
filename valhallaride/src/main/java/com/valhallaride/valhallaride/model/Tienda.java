@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tienda {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // chicos, usamos esto porque generaba un error en la serialización, ocultando así el objeto. 
+public class Tienda {                                          // Con esta anotación, si encuentra el objeto
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
