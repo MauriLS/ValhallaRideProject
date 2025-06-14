@@ -36,12 +36,13 @@ public class TiendaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Tienda> buscar(@PathVariable Long id) {
-        try {
-            Tienda tienda = tiendaService.findById(id);
+        Tienda tienda = tiendaService.findById(id);
+        if (tienda != null) {
             return ResponseEntity.ok(tienda);
-        } catch (Exception e) {
+        } else {
             return ResponseEntity.notFound().build();
         }
+            
     }
 
     @PostMapping
@@ -52,10 +53,11 @@ public class TiendaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Tienda> actualizar(@PathVariable Long id, @RequestBody Tienda tienda) {
-        try {
-            tiendaService.save(tienda);
-            return ResponseEntity.ok(tienda);
-        } catch (Exception e) {
+        Tienda tiendaActualizada = tiendaService.updateTienda(id, tienda);
+
+        if (tiendaActualizada != null){
+            return ResponseEntity.ok(tiendaActualizada);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
