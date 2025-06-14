@@ -23,7 +23,7 @@ public class TiendaService {
     }
 
     public Tienda findById(Long id) {
-        return tiendaRepository.getById(id);
+        return tiendaRepository.findById(id).orElse(null);
     }
 
     public Tienda save(Tienda tienda) {
@@ -65,3 +65,4 @@ public class TiendaService {
         }
     }
 }
+
