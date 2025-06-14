@@ -11,6 +11,9 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 
 import lombok.AllArgsConstructor;
@@ -41,11 +44,11 @@ public class Usuario {
     String contrasena;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<Orden> ordenes;
 
     @ManyToOne
     @JoinColumn(name = "idRol", nullable = false)
     private Rol rol;
 }
-
 
