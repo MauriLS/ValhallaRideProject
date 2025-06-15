@@ -11,36 +11,38 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "usuario")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_usuario;
+    private Integer idUsuario;
 
-    
-    @Column (length = 30, nullable = false) 
+    @Column(length = 30, nullable = false)
     private String nombreUsuario;
 
-    
-    @Column (unique = true, length = 50, nullable = false) 
+    @Column(unique = true, length = 50, nullable = false)
+    @JsonIgnore
     private String correoUsuario;
 
-
-    @Column (length = 30, nullable = false) 
+    @Column(length = 30, nullable = false)
+    @JsonIgnore
     String contrasena;
 
     @OneToMany(mappedBy = "usuario")
@@ -51,4 +53,3 @@ public class Usuario {
     @JoinColumn(name = "idRol", nullable = false)
     private Rol rol;
 }
-
