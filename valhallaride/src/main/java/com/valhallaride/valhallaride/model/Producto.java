@@ -4,6 +4,7 @@ package com.valhallaride.valhallaride.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -37,11 +38,11 @@ public class Producto {
     @Column (nullable = false)
     private Integer stockProducto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCategoria", nullable = false)
     private Categoria categoria;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idTienda", nullable = false)
     private Tienda tienda;
 
