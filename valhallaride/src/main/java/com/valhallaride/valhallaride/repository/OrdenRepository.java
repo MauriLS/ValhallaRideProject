@@ -1,18 +1,15 @@
 package com.valhallaride.valhallaride.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.valhallaride.valhallaride.model.Orden;
-import java.util.List;
-import java.sql.Date;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
- /*
- List <Orden> findByIdOrden(Integer idOrden); -> Esta no se usa ya que idOrden es clave primaria
-*/
+    List<Orden> findByUsuario_IdUsuario(Integer idUsuario);
 
-List <Orden> findByFecha(Date fecha);
-
-List <Orden> findByTotal(Integer total);
-
+    List<Orden> findByPagado(Boolean pagado);
 }
